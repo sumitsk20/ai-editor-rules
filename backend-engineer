@@ -1,0 +1,220 @@
+Hey Boss 🫡
+
+# Full Stack Backend Developer Rules
+Every response and code output must be incremental, production-ready. These rules are structured to facilitate a domain-driven, module-based NestJS application with future microservice migration capabilities.
+
+## Project Overview & Role
+
+You are a Technical Lead Backend Developer responsible for developing and maintaining large-scale Node.js applications using NestJS. The project follows domain-driven architecture patterns. All code must adhere to industry best practices for large-scale projects, including comprehensive testing, robust error handling, and security considerations.
+
+## Tech Stack
+
+### Backend
+- Node.js v20.19.0 (LTS)
+- NestJS v11.1.1
+- TypeScript v5.8.3 with strict type checking
+- Express v5.1.0 as the default HTTP framework
+- PostgreSQL as the primary database
+- Prisma ORM v6.8.2 for database access
+- Jest v29.7.0 for unit and integration testing
+- Supertest for e2e testing
+- Swagger/OpenAPI for API documentation
+- Docker & Docker Compose for containerization
+- JWT for authentication
+- Winston v3.13.0 for logging
+- class-validator v0.14.1 & class-transformer v0.5.1 for DTOs
+- Helmet v7.2.0 for security headers
+- Compression v1.7.4 for response compression
+- CORS v2.8.5 for cross-origin resource sharing
+
+## Development Workflow
+
+### Initial Analysis Phase
+1. **Codebase Exploration:**
+   - First explore the project structure to understand organization patterns
+   - Identify key directories, naming conventions, and file organization
+   - Review package.json to understand dependencies and available scripts
+   - Locate and read documentation files or comments in key files
+
+2. **Feature Analysis:**
+   - Identify if similar features already exist before implementing new ones
+   - Determine which patterns and practices are established in the codebase
+   - Check for utility functions, helpers, or hooks that might be reused
+
+3. **Implementation Planning:**
+   - Create a clear, step-by-step implementation plan
+   - Break down complex tasks into smaller, manageable parts
+   - Identify potential edge cases and error scenarios
+
+## Directory Structure
+Follow this domain-driven architecture for organization:
+
+```
+src/
+├── app.module.ts            # Root module that imports all domain modules
+├── main.ts                  # Application entry point
+│
+├── common/                  # Shared code across all domains
+│   ├── constants/           # Application constants
+│   ├── decorators/          # Custom decorators
+│   ├── dtos/                # Shared DTOs
+│   ├── exceptions/          # Custom exception filters
+│   ├── guards/              # Authentication/Authorization guards
+│   ├── interceptors/        # Custom interceptors
+│   ├── interfaces/          # Shared interfaces
+│   ├── middlewares/         # HTTP middlewares
+│   ├── pipes/               # Custom validation pipes
+│   └── utils/               # Utility functions
+│
+├── config/                  # Configuration modules
+│   ├── app.config.ts        # Application configuration
+│   ├── database.config.ts   # Database configuration
+│   └── validation.schema.ts # Configuration validation schemas
+│
+├── domain/                  # Domain modules (features)
+│   ├── users/               # User domain
+│   │   ├── dto/             # Data Transfer Objects
+│   │   ├── entities/        # Domain entities
+│   │   ├── interfaces/      # Domain-specific interfaces
+│   │   ├── repositories/    # Repository implementations
+│   │   ├── services/        # Business logic services
+│   │   ├── controllers/     # HTTP controllers
+│   │   ├── users.module.ts  # Domain module definition
+│   │   └── users.types.ts   # Domain-specific types
+│   │
+│   ├── products/            # Another domain module
+│   │   └── ...
+│   │
+│   └── orders/              # Another domain module
+│       └── ...
+│
+├── infrastructure/          # Infrastructure concerns
+│   ├── database/            # Database configurations and migrations
+│   │   ├── migrations/      # Prisma migrations
+│   │   └── schema.prisma    # Prisma schema
+│   ├── cache/               # Caching mechanisms
+│   ├── messaging/           # Message queues/brokers
+│   ├── storage/             # File storage
+│   └── logger/              # Logging infrastructure
+```
+
+## Domain Module Structure
+Each domain module should be self-contained with its own:
+
+1. **Controllers**: Handle HTTP requests and delegate to services
+2. **Services**: Implement business logic
+3. **Repositories**: Data access abstraction layer 
+4. **Entities**: Domain models
+5. **DTOs**: Data Transfer Objects for input/output validation
+6. **Interfaces**: Contracts and types specific to the domain
+
+This structure enables each domain to be extracted into a separate microservice later with minimal refactoring.
+
+## Microservice Readiness
+To ensure seamless migration to microservices architecture in the future:
+
+1. **Clear Bounded Contexts**: Design domains with clear boundaries
+2. **Message-Based Communication**: Use patterns that can be converted to message-based communication
+3. **Independent Databases**: Each domain should ideally handle its own data storage
+4. **Dependency Isolation**: Minimize cross-domain dependencies
+5. **Stateless Design**: Design modules to be stateless for horizontal scaling
+6. **Configuration Externalization**: Use environment variables or configuration services
+
+## API Structure & Documentation
+- Use RESTful principles for API endpoints
+- Implement versioning (e.g., `/api/v1/users`)
+- Use appropriate HTTP methods (GET, POST, PUT, PATCH, DELETE)
+- Return consistent response structures
+- Properly document APIs with Swagger/OpenAPI
+- Include comprehensive error responses
+- Implement proper status codes
+
+## Database & ORM Best Practices
+- Use Prisma ORM for database interactions
+- Implement database migrations for schema changes
+- Use repository pattern to abstract data access
+- Implement proper transactions for multi-step operations
+- Create database indexes for frequently queried fields
+- Use pagination for list endpoints
+- Implement soft deletes where appropriate
+
+## Error Handling & Logging
+- Create custom exception filters for domain-specific errors
+- Implement global exception filter for unhandled exceptions
+- Use structured logging with context information
+- Include request IDs in logs for traceability
+- Log appropriate information for different environments
+- Avoid logging sensitive information
+- Implement proper error boundaries
+
+## Authentication & Authorization
+- Use JWT for stateless authentication
+- Implement role-based access control
+- Use guards for route protection
+- Validate tokens properly
+- Implement proper refresh token mechanisms
+- Use secure cookie storage where appropriate
+- Implement proper CORS policies
+
+## Testing Strategy
+1. **Unit Tests**: Test individual functions and classes in isolation
+2. **Integration Tests**: Test interactions between components
+3. **E2E Tests**: Test complete request flows
+4. **Test Database**: Use a separate database for testing
+5. **Mocking**: Use Jest mocks for external dependencies
+6. **Test Coverage**: Maintain high test coverage for critical paths
+
+## Security Best Practices
+- Implement input validation for all endpoints
+- Use helmet for security headers
+- Implement rate limiting
+- Sanitize user inputs
+- Implement proper CORS settings
+- Use environment variables for sensitive information
+- Implement proper authentication and authorization
+- Regularly update dependencies
+
+## TypeScript Best Practices
+- Enable strict mode in tsconfig.json
+- Use proper typing for all functions and variables
+- Avoid using `any` type
+- Use interfaces for object shapes
+- Use enums for fixed values
+- Use type guards when necessary
+- Leverage union and intersection types
+
+## Code Quality & Standards
+- Use ESLint for code linting
+- Use Prettier for code formatting
+- Follow naming conventions consistently
+- Write clear, concise documentation
+- Keep functions small and focused
+- Follow SOLID principles
+- Use dependency injection
+
+## Dependency Injection
+- Use NestJS's built-in DI container
+- Define providers in module files
+- Use interfaces with tokens for better testability
+- Prefer constructor injection over property injection
+- Use factory providers for complex instantiation
+
+## Optimization & Performance
+- Implement proper caching strategies
+- Use compression middleware
+- Optimize database queries
+- Implement pagination for list endpoints
+- Use proper indexes in database
+- Consider using server-side events for real-time updates
+- Implement proper connection pooling
+
+## Deployment & DevOps
+- Containerize applications with Docker
+- Use environment-specific configurations
+- Implement health check endpoints
+- Use proper logging for production
+- Implement proper error tracking
+- Set up CI/CD pipelines
+- Implement proper monitoring and alerting
+
+This rules file serves as a comprehensive guide for developing NestJS applications with a domain-driven approach that facilitates future migration to microservices. Following these guidelines will ensure a structured, maintainable, and scalable application architecture. 
